@@ -1,0 +1,91 @@
+{{template "admin/base/body.html" .}}
+{{define "head"}}
+<title>{{ .title }}</title>
+{{end}}
+
+{{define "docker"}}
+<div class="layui-card layuimini-page-header">
+    <div class="layui-breadcrumb layuimini-page-title">
+        <a lay-href="" href="/">主页</a><span lay-separator="">/</span>
+        <a><cite>{{ .title }}</cite></a>
+    </div>
+</div>
+
+<div class="layuimini-content-page" style="height: calc(100% - 36px)">
+            <div class="layuimini-container layuimini-page-anim">
+                <div class="layuimini-main">
+
+                    <div class="layui-form layuimini-form" style="padding:30px">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">旧的密码</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="old_password" lay-verify="required" lay-reqtext="旧的密码不能为空" placeholder="请输入旧的密码" value="" class="layui-input">
+                                <tip>填写自己账号的旧的密码。</tip>
+                            </div>
+                        </div>
+                        <input type="hidden" name="name" value="{{ .admin }}">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">新的密码</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="new_password" lay-verify="required" lay-reqtext="新的密码不能为空" placeholder="请输入新的密码" value="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">新的密码</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="again_password" lay-verify="required" lay-reqtext="新的密码不能为空" placeholder="请输入新的密码" value="" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+<script>
+    layui.use(['jquery','miniPage','layer','form'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer;
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            // var index = layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // }, function () {
+            //     layer.close(index);
+            //     miniPage.hashHome();
+            // });
+            data = data.field;
+            // 两次密码不相同就报错
+            if(data.new_password != data.again_password){
+                layer.msg('两次输入的新密码不相同!',{icon: 5, time: 1000});
+                return false;
+            }
+            $.post('/admin/to_change_pwd', data, function (res) {
+                    console.log(res);
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 6, time: 1000}, function () {
+                            window.location = '/admin';
+                        });
+                    }else{
+                        layer.msg(res.msg, {icon: 5, time:1000}, function () {
+
+                        });
+                        return false;
+                    }
+                }
+            );
+            return false;
+        });
+    });
+</script>
+{{end}}

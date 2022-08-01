@@ -1,0 +1,298 @@
+{{template "admin/base/base.html" .}}
+<body class="layui-layout-body layuimini-all">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header header">
+    <div class="layui-logo layuimini-logo layuimini-back-home">
+      <a href="/admin" target="_self" ><img src="/static/images/logo.png" alt="logo"><h1>绿豆</h1></a>
+
+    </div>
+    <div class="layuimini-header-content">
+      <div class="layuimini-header-content">
+        <a>
+          <div class="layuimini-tool"><i title="展开" class="fa fa-outdent" data-side-fold="1"></i></div>
+        </a>
+        <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-menu-header-pc layuimini-pc-show">
+          <li data-menu="multi_module_0" class="layui-nav-item menu-li {{if eq "grp1" .group }}layui-this{{end}}" id="multi_module_0HeaderId"> <a href="javascript:;"> <span class="layui-left-nav">常规管理</span></a></li>
+          <li data-menu="multi_module_1" class="layui-nav-item menu-li {{if eq "grp2" .group }}layui-this{{end}}" id="multi_module_1HeaderId"> <a href="javascript:;"> <span class="layui-left-nav">其他管理</span></a></li>->
+          <span class="layui-nav-bar" style="left: 100px; top: 60px; width: 0px; opacity: 0;"></span>
+        </ul>
+
+      </div>
+
+      <ul class="layui-nav layui-layout-right">
+<!--        <li class="layui-nav-item" lay-unselect>-->
+<!--          <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>-->
+<!--        </li>-->
+<!--        <li class="layui-nav-item" lay-unselect>-->
+<!--          <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa-trash-o"></i></a>-->
+<!--        </li>-->
+<!--        <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>-->
+<!--          <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>-->
+<!--        </li>-->
+        <li class="layui-nav-item layuimini-setting">
+          <a href="javascript:;">{{.admin}} </a>
+          <dl class="layui-nav-child">
+<!--            <dd>-->
+<!--              <a href="/admin/change_pwd" layuimini-content-href="page/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>-->
+<!--            </dd>-->
+            <dd>
+              <a href="/admin/change_pwd"  data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+            </dd>
+            <dd>
+              <hr>
+            </dd>
+            <dd>
+              <a href="javascript:;" class="login-out" id="logout">退出登录</a>
+            </dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item layuimini-select-bgcolor" lay-unselect>
+          <a href="javascript:;" data-bgcolor="配色方案"><i class="fa fa-ellipsis-v"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--无限极左侧菜单-->
+  <div class="layui-side layui-bg-black layuimini-menu-left">
+    <ul class="layui-nav layui-nav-tree layui-left-nav-tree {{if eq "grp1" .group }}layui-this{{else}}layui-hide{{end}} "    id="multi_module_0">
+      <li class="layui-nav-item menu-li  layui-nav-itemed undefined">
+        <a target="_target" href="javascript:;"> <i class="fa fa-home"></i>  <span class="layui-left-nav">主页模板</span><span class="layui-nav-more"></span></a>
+        <dl class="layui-nav-child ">
+          <dd class="menu-dd  layui-nav-itemed {{if eq "/admin/list" .Path }}layui-this{{end}} "> <a href="/admin/list" target="_self">  <i class="fa fa-tachometer"></i><span class="layui-left-nav"> 师傅列表</span></a> </dd>
+          <dd class="menu-dd  layui-nav-itemed {{if eq "/admin/hello" .Path }}layui-this{{end}} "> <a href="/admin/hello" layuimini-href="/admin/hello" target="_self">  <i class="fa fa-tachometer"></i>  <span class="layui-left-nav"> hello</span></a> </dd>
+          <dd class="menu-dd  layui-nav-itemed "> <a href="javascript:;" layuimini-href="page/welcome-3.html" target="_self">  <i class="fa fa-tachometer"></i>  <span class="layui-left-nav"> 师傅权限</span></a> </dd></dl>
+      </li>
+      <li class="layui-nav-item menu-li  layui-nav-itemed {{if eq "/admin/wpuser_list" .Path}} layui-this {{end}} "> <a  target="_self" href="/admin/wpuser_list"> <i class="fa fa-users"></i>  <span class="layui-left-nav">小程序用户</span></a>  </li>
+      <li class="layui-nav-item menu-li  layui-nav-itemed undefined"> <a layuimini-href="page/setting.html" target="_self" href="javascript:;"> <i class="fa fa-gears"></i>  <span class="layui-left-nav">系统设置</span></a>  </li>
+      <li class="layui-nav-item menu-li  layui-nav-itemed undefined"> <a layuimini-href="page/table.html" target="_self" href="javascript:;"> <i class="fa fa-file-text"></i>  <span class="layui-left-nav">表格示例</span></a>  </li>
+    </ul>
+
+
+    <ul class="layui-nav layui-nav-tree layui-left-nav-tree {{if eq "grp2" .group }}layui-this{{else}}layui-hide{{end}}   " id="multi_module_1">
+      <li class="layui-nav-item menu-li  undefined"> <a  target="_self" href="/admin/hello2"> <i class="fa fa-adn"></i>  <span class="layui-left-nav">hello2</span></a>  </li>
+      <li class="layui-nav-item menu-li  undefined"> <a layuimini-href="page/color-select.html" target="_self" href="javascript:;"> <i class="fa fa-dashboard"></i>  <span class="layui-left-nav">颜色选择</span></a>  </li>
+      <li class="layui-nav-item menu-li  undefined"> <a layuimini-href="page/table-select.html" target="_self" href="javascript:;"> <i class="fa fa-angle-double-down"></i>  <span class="layui-left-nav">下拉选择</span></a> </li>
+      <span class="layui-nav-bar"></span>
+    </ul>
+
+  </div>
+
+  <!--    初始化加载层-->
+  <!--    <div class="layuimini-loader">-->
+  <!--        <div class="layuimini-loader-inner"></div>-->
+  <!--    </div>-->
+
+  <!--手机端遮罩层-->
+  <div class="layuimini-make"></div>
+
+  <!-- 移动导航 -->
+  <div class="layuimini-site-mobile"><i class="layui-icon"></i></div>
+
+  <div class="layui-body">
+
+    {{template "docker" .}}
+
+  </div>
+
+</div>
+  <script>
+    layui.use(['jquery', 'element', 'miniTheme'], function () {
+      var $ = layui.jquery,
+          miniTheme = layui.miniTheme,
+          element = layui.element;
+
+        // 获取保存的样式，默认为0
+        let bgColorId = window.sessionStorage.getItem('layuiminiBgcolorId')?window.sessionStorage.getItem('layuiminiBgcolorId') : 0
+        miniTheme.render({
+            bgColorDefault: bgColorId,
+            listen: false,
+        });
+        /**
+         * 菜单模块切换
+         */
+        $('body').on('click', '[data-menu]', function () {
+          var loading = layer.load(0, {shade: false, time: 2 * 1000});
+          var menuId = $(this).attr('data-menu');
+          // header
+          $(".layuimini-header-menu .layui-nav-item.layui-this").removeClass('layui-this');
+          $(this).addClass('layui-this');
+          // left
+          $(".layuimini-menu-left .layui-nav.layui-nav-tree.layui-this").addClass('layui-hide');
+          $(".layuimini-menu-left .layui-nav.layui-nav-tree.layui-this.layui-hide").removeClass('layui-this');
+          $("#" + menuId).removeClass('layui-hide');
+          $("#" + menuId).addClass('layui-this');
+          layer.close(loading);
+        });
+
+        /**
+         * 菜单缩放
+         */
+        // $('body').on('click', '.layuimini-site-mobile', function () {
+        //   var loading = layer.load(0, {shade: false, time: 2 * 1000});
+        //   var isShow = $('.layuimini-tool [data-side-fold]').attr('data-side-fold');
+        //   if (isShow == 1) { // 缩放
+        //     $('.layuimini-tool [data-side-fold]').attr('data-side-fold', 0);
+        //     $('.layuimini-tool [data-side-fold]').attr('class', 'fa fa-indent');
+        //     $('.layui-layout-body').removeClass('layuimini-all');
+        //     $('.layui-layout-body').addClass('layuimini-mini');
+        //   } else { // 正常
+        //     $('.layuimini-tool [data-side-fold]').attr('data-side-fold', 1);
+        //     $('.layuimini-tool [data-side-fold]').attr('class', 'fa fa-outdent');
+        //     $('.layui-layout-body').removeClass('layuimini-mini');
+        //     $('.layui-layout-body').addClass('layuimini-all');
+        //     layer.close(window.openTips);
+        //   }
+        //   element.init();
+        //   layer.close(loading);
+        // });
+        /**
+         * 菜单缩放
+         */
+        $('body').on('click', '[data-side-fold]', function () {
+          var loading = layer.load(0, {shade: false, time: 2 * 1000});
+          var isShow = $('.layuimini-tool [data-side-fold]').attr('data-side-fold');
+          if (isShow == 1) { // 缩放
+            $('.layuimini-tool [data-side-fold]').attr('data-side-fold', 0);
+            $('.layuimini-tool [data-side-fold]').attr('class', 'fa fa-indent');
+            $('.layui-layout-body').removeClass('layuimini-all');
+            $('.layui-layout-body').addClass('layuimini-mini');
+            // $(".menu-li").each(function (idx,el) {
+            //     $(el).addClass("hidden-sub-menu");
+            // });
+
+          } else { // 正常
+            $('.layuimini-tool [data-side-fold]').attr('data-side-fold', 1);
+            $('.layuimini-tool [data-side-fold]').attr('class', 'fa fa-outdent');
+            $('.layui-layout-body').removeClass('layuimini-mini');
+            $('.layui-layout-body').addClass('layuimini-all');
+            // $(".menu-li").each(function (idx,el) {
+            //     $(el).removeClass("hidden-sub-menu");
+            // });
+            layer.close(window.openTips);
+          }
+          element.init();
+          layer.close(loading);
+        });
+
+        /**
+         * 手机端点开模块
+         */
+        // $('body').on('click', '.layuimini-header-menu.layuimini-mobile-show dd', function () {
+        //   var loading = layer.load(0, {shade: false, time: 2 * 1000});
+        //   var check = $('.layuimini-tool [data-side-fold]').attr('data-side-fold');
+        //   if(check === "1"){
+        //     $('.layuimini-site-mobile').trigger("click");
+        //     element.init();
+        //   }
+        //   layer.close(loading);
+        // });
+
+      /**
+       * 全屏
+       */
+      // $('body').on('click', '[data-check-screen]', function () {
+      //   var check = $(this).attr('data-check-screen');
+      //   if (check == 'full') {
+      //     var el = document.documentElement;
+      //     var rfs = el.requestFullScreen || el.webkitRequestFullScreen;
+      //     if (typeof rfs != "undefined" && rfs) {
+      //       rfs.call(el);
+      //     } else if (typeof window.ActiveXObject != "undefined") {
+      //       var wscript = new ActiveXObject("WScript.Shell");
+      //       if (wscript != null) {
+      //         wscript.SendKeys("{F11}");
+      //       }
+      //     } else if (el.msRequestFullscreen) {
+      //       el.msRequestFullscreen();
+      //     } else if (el.oRequestFullscreen) {
+      //       el.oRequestFullscreen();
+      //     } else if (el.webkitRequestFullscreen) {
+      //       el.webkitRequestFullscreen();
+      //     } else if (el.mozRequestFullScreen) {
+      //       el.mozRequestFullScreen();
+      //     } else {
+      //       // miniAdmin.error('浏览器不支持全屏调用！');
+      //     }
+      //     $(this).attr('data-check-screen', 'exit');
+      //     $(this).html('<i class="fa fa-compress"></i>');
+      //   } else {
+      //     var el = document;
+      //     var cfs = el.cancelFullScreen || el.webkitCancelFullScreen || el.exitFullScreen;
+      //     if (typeof cfs != "undefined" && cfs) {
+      //       cfs.call(el);
+      //     } else if (typeof window.ActiveXObject != "undefined") {
+      //       var wscript = new ActiveXObject("WScript.Shell");
+      //       if (wscript != null) {
+      //         wscript.SendKeys("{F11}");
+      //       }
+      //     } else if (el.msExitFullscreen) {
+      //       el.msExitFullscreen();
+      //     } else if (el.oRequestFullscreen) {
+      //       el.oCancelFullScreen();
+      //     }else if (el.mozCancelFullScreen) {
+      //       el.mozCancelFullScreen();
+      //     } else if (el.webkitCancelFullScreen) {
+      //       el.webkitCancelFullScreen();
+      //     } else {
+      //       //miniAdmin.error('浏览器不支持全屏调用！');
+      //     }
+      //     $(this).attr('data-check-screen', 'full');
+      //     $(this).html('<i class="fa fa-arrows-alt"></i>');
+      //   }
+      // });
+
+
+      $('body').on('click', '[data-bgcolor]', function () {
+        var loading = layer.load(0, {shade: false, time: 2 * 1000});
+        var clientHeight = (document.documentElement.clientHeight) - 400;
+        var bgColorHtml = miniTheme.buildBgColorHtml(miniTheme.config());
+        var html = '<div class="layuimini-color">\n' +
+                '<div class="color-title">\n' +
+                '<span>配色方案</span>\n' +
+                '</div>\n' +
+                '<div class="color-content">\n' +
+                '<ul>\n' + bgColorHtml + '</ul>\n' +
+                '</div>\n' +
+                '</div>';
+        layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          shade: 0.2,
+          anim: 2,
+          shadeClose: true,
+          id: 'layuiminiBgColor',
+          area: ['340px', clientHeight + 'px'],
+          offset: 'rb',
+          content: html,
+          success: function (index, layero) {
+          },
+          end: function () {
+            $('.layuimini-select-bgcolor').removeClass('layui-this');
+          }
+        });
+        layer.close(loading);
+      });
+
+      $('body').on('click', '[data-select-bgcolor]', function () {
+        var bgcolorId = $(this).attr('data-select-bgcolor');
+        $('.layuimini-color .color-content ul .layui-this').attr('class', '');
+        $(this).attr('class', 'layui-this');
+        sessionStorage.setItem('layuiminiBgcolorId', bgcolorId);
+        miniTheme.render({
+          bgColorDefault: bgcolorId,
+          listen: false,
+        });
+      });
+
+      // 退出登录
+      $('.login-out').on("click", function () {
+        $.post('/admin/logout', "", function (res) {
+          if(res.code === 0){
+            window.location = '/admin/login';
+          }
+        });
+      });
+    });
+  </script>
+</body>

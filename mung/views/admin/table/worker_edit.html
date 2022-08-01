@@ -1,0 +1,137 @@
+<div class="layuimini-main">
+    <div class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="{{ .user.Nickname }}" class="layui-input">
+                <tip>填写用户姓名。</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">手机</label>
+            <div class="layui-input-block">
+                <input type="number" name="phone" lay-verify="require|phone|number" lay-reqtext="手机不能为空" placeholder="请输入手机" value="{{ .user.Phone }}" class="layui-input">
+                <tip>请填写手机号码。</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">状态</label>
+            <div class="layui-input-block">
+                {{ if .user.ID }}
+                <input type="radio" name="status" value="1" title="正常" {{ if eq .user.Status 1}} checked="" {{ end }} >
+                <input type="radio" name="status" value="0" title="失效" {{ if eq .user.Status 0}} checked="" {{ end }} >
+                {{ else }}
+                <input type="radio" name="status" value="1" title="正常" checked="" >
+                <input type="radio" name="status" value="0" title="失效" >
+                {{ end }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">account</label>
+            <div class="layui-input-block">
+                <input type="text" name="account" lay-verify="required" placeholder="请输入account" value="{{ .user.Account }}" class="layui-input">
+            </div>
+        </div>
+        <input type="hidden" name="uid" value="{{ .user.ID }}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-radius" id="upload1">上传图片</button>
+                <input type="hidden" id="img_url" name="img_path" value="{{ .user.Avatar }}"/>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" width="80" height="80" id="demo1" src="{{ .user.Avatar }}" />
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'table', "upload"], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            upload = layui.upload;
+            $ = layui.$;
+
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        // 当前弹出层，防止ID被覆盖
+        var parentIndex = layer.index;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            $.post('/admin/worker2do', data.field, function (res) {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 6, time: 1000}, function () {
+                            // window.location = '/admin'
+                            layer.close(parentIndex);
+                            // 父级刷新页面
+                            window.parent.location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {icon: 5, time:1000});
+                    }
+                }
+            );
+
+            // var index = layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // }, function () {
+            //
+            //     // 关闭弹出层
+            //     layer.close(index);
+            //     layer.close(parentIndex);
+            //
+            // });
+
+            return false;
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#upload1'
+            ,url: '/admin/uploadPic' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                //上传成功
+                // layer.msg('上传成功');
+                //将图片的名字放在表单中，添加的时候得放在数据库里面
+                $(function(){
+                    // 赋值
+                    $("#img_url").val(res.img);
+
+                })
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                // var demoText = $('#demoText');
+                // demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                // demoText.find('.demo-reload').on('click', function(){
+                //     uploadInst.upload();
+                // });
+            }
+        });
+
+
+    });
+</script>

@@ -1,0 +1,33 @@
+{{template "admin/base/body.html" .}}
+{{define "head"}}
+<title>{{ .title }}</title>
+{{end}}
+
+{{define "docker"}}
+<div class="layui-card layuimini-page-header">
+    <div class="layui-breadcrumb layuimini-page-title">
+        <a lay-href="" href="/">主页</a><span lay-separator="">/</span>
+
+        <a><cite>code</cite></a>
+    </div>
+</div>
+<div class="layuimini-content-page" style="height: calc(100% - 36px)">
+    <div class="layuimini-container layuimini-main">
+
+            <pre class="layui-code">
+                s := strconv.Itoa(i)
+                // 等价于
+                s := strconv.FormatInt(int64(i), 10)
+            </pre>
+
+    </div>
+</div>
+<script>
+    layui.use(['jquery','miniPage','layer'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer;
+
+    });
+</script>
+{{end}}
+

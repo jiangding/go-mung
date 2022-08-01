@@ -1,0 +1,199 @@
+{{template "admin/base/body.html" .}}
+{{define "head"}}
+<title>{{ .title }}</title>
+{{end}}
+
+{{define "docker"}}
+<div class="layui-card layuimini-page-header">
+    <div class="layui-breadcrumb layuimini-page-title">
+        <a lay-href="" href="/">主页</a><span lay-separator="">/</span>
+        <a><cite>常规管理</cite></a><span lay-separator="">/</span>
+        <a><cite>{{ .title }}</cite></a>
+    </div>
+</div>
+
+<div class="layuimini-content-page" style="height: calc(100% - 36px)">
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+<!--                        <div class="layui-inline">-->
+<!--                            <label class="layui-form-label">手机</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="phone" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+<!--                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加用户 </button>-->
+<!--                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+<!--            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>-->
+        </script>
+    </div>
+
+</div>
+</div>
+<script>
+    layui.use(['jquery','form', 'table','miniPage','element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            miniPage = layui.miniPage;
+
+        table.render({
+            elem: '#currentTableId',
+            url: '/adminapi/wpusers',
+            // toolbar: '#toolbarDemo',
+            // defaultToolbar: ['filter', 'exports', 'print'],
+            cols: [[
+                // {type: "checkbox", width: 50},
+                {field: 'id', width: 80, title: 'ID', sort: true},
+                {field: 'avatarUrl', title: '头像', width:120,templet: img},
+                {field: 'nickName', width: 180, title: '昵称'},
+                {field: 'openid', width: 250, title: 'openId'},
+                {field: 'session_key', width: 250, title: 'sessionKey'},
+                {field: 'city', width: 120, title: '城市' },
+                {field: 'status', width: 120, title: '状态', sort: true},
+                {field: 'created_at', width: 200, title: '创建时间', sort: true, templet:function (d) {
+                    return new Date(+new Date(new Date(d.created_at).toJSON())+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+                    }},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            //执行搜索重载
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    username: data.field.username,
+                    phone: data.field.phone
+                }
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar事件监听
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {   // 监听添加操作
+                var content = miniPage.getHrefContent("/admin/worker_add");
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '添加用户',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            // console.log(data);
+            if (obj.event === 'edit') {
+                var content = miniPage.getHrefContent("/admin/wpuser_edit?id="+data.id);
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '编辑用户',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                console.log(obj.data);
+                layer.confirm('真的删除行么?', function (index) {
+                    $.post('/admin/worker_del', obj.data, function (res) {
+                            console.log(res);
+                            if (res.code === 0) {
+                                layer.msg(res.msg, {icon: 6, time: 1000}, function () {
+                                    obj.del();
+                                    layer.close(index);
+                                });
+                            }else{
+                                layer.msg(res.msg, {icon: 5, time: 1000});
+                            }
+                        }
+                    );
+                });
+            }
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    // 表格格式化 - img 渲染
+    function img(cVal) {
+        //console.log(cVal);
+        return "<img src='" + cVal.avatarUrl+ "' style=\"border-radius:10px\" height=\"50\" width=\"50\" alt='icon'/>";
+    }
+
+</script>
+<style>
+    .layui-table-cell{
+        display:table-cell;
+        vertical-align: middle;
+    }
+</style>
+{{end}}
+

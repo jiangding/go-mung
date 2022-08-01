@@ -1,0 +1,29 @@
+{{template "admin/base/body.html" .}}
+{{define "head"}}
+<title>{{ .title }}</title>
+{{end}}
+
+{{define "docker"}}
+<div class="layui-card layuimini-page-header">
+    <div class="layui-breadcrumb layuimini-page-title">
+        <a lay-href="" href="/">主页</a><span lay-separator="">/</span>
+        <a><cite>常规管理</cite></a><span lay-separator="">/</span>
+        <a><cite>{{ .title }}</cite></a>
+    </div>
+</div>
+<div class="layuimini-content-page" style="height: calc(100% - 36px)">
+    <div class="layuimini-container layuimini-page-anim">
+        <div class="layuimini-main">
+            hello world
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','miniPage','layer'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer;
+
+    });
+</script>
+{{end}}
+
