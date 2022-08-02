@@ -1,0 +1,27 @@
+宝塔linux 面板:
+http://120.24.184.167:8888/
+lvdouiot
+Lvdouiot168 
+
+阿里云服务器:
+120.24.184.167
+root
+Lvdouiot168
+
+后台：http://120.24.184.167:800/admin/home/
+https://shop.lvdouiot.com/admin/
+账号:admin
+密码:lvdouiot168
+
+后台
+https://shop.lvdouiot.com/admin/
+
+前端演示：：：：：http://120.24.184.167:800/static/html/pc.html
+
+
+
+
+bee pack -be GOOS=linux
+
+nohup ./mung >/dev/null 2>&1 &
+
